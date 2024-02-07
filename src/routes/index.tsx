@@ -1,26 +1,27 @@
-import { Routes as ReactRouter, Route } from "react-router-dom";
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
 import { Home } from "./home.tsx";
 import { Landing } from "./landing.tsx";
-import { Layout } from "@/layout.tsx";
 import { ErrorPage } from "./error.tsx";
 import { Weather } from "./weather.tsx";
-import { useAuth0 } from "@auth0/auth0-react";
-import { PageLoader } from "@/components/page-loader.tsx";
+import {
+  loader as weatherLoader,
+  action as weatherAction,
+} from "@/data/weather";
+import { Layout } from "./layout.tsx";
+import { Protected } from "./protected.tsx";
 
-export const Routes = () => {
-  const { isLoading } = useAuth0();
-
-  if (isLoading) {
-    return <PageLoader />;
-  }
-
-  return (
-    <ReactRouter>
-      <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
-        <Route path="/" element={<Landing />} />
-        <Route path="home" element={<Home />} />
-        <Route path="weather" element={<Weather />} />
+export const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
+      <Route path="/" element={<Landing />} />
+      <Route element={<Protected />}>
+        <Route path="home" element={<Home />} action={weatherAction} />
+        <Route path="weather" element={<Weather />} loader={weatherLoader} />
       </Route>
-    </ReactRouter>
-  );
-};
+    </Route>,
+  ),
+);
