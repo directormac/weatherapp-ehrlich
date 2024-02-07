@@ -1,57 +1,74 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useLoaderData, useNavigate } from "react-router-dom";
-import { format } from "date-fns";
+import { useLoaderData, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Forecast } from "@/types";
+import { useMediaQuery } from "usehooks-ts";
 
 export const Weather = () => {
-  const city = useLoaderData();
+  const isNotSmallDevice = useMediaQuery("(min-width: 768px)");
+  const forecasts = useLoaderData() as Array<Forecast>;
+  const [searchParams] = useSearchParams();
+  const city = searchParams.get("city");
   const navigate = useNavigate();
+
+  if (forecasts.length === 0 || !city) {
+    return (
+      <div className="container">
+        <div className="flex flex-col space-y-8 py-20">
+          <div className="justify-center items-center text-center">
+            <h1 className="text-3xl font-bold">
+              <span className="text-red-500">Oops!</span> it seems that the city
+              you are looking for does not exist!
+            </h1>
+          </div>
+          <Button className="ml-auto w-36" onClick={() => navigate(-1)}>
+            Back
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container">
       <div className="flex flex-col space-y-8 py-20">
-        <h1>Weather Page</h1>
         <Table>
-          <TableCaption>Weather for the City of {city?.name}</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Date(mm/dd/yyyy)</TableHead>
               <TableHead>Temp(F)</TableHead>
-              <TableHead className="invisible md:visible">
-                Description
-              </TableHead>
-              <TableHead className="invisible md:visible">Main</TableHead>
-              <TableHead className="invisible md:visible">Pressure</TableHead>
-              <TableHead className="invisible md:visible">Humidity</TableHead>
+              {isNotSmallDevice && (
+                <>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Main</TableHead>
+                  <TableHead>Pressure</TableHead>
+                  <TableHead>Humidity</TableHead>
+                </>
+              )}
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell>
-                {format(new Date(Date.now() + city?.dt), "MM/dd/yyyy")}
-              </TableCell>
-              <TableCell>{city?.main?.temp}</TableCell>
-              <TableCell className="invisible md:visible">
-                {city?.weather[0]?.description}
-              </TableCell>
-              <TableCell className="invisible md:visible">
-                {city?.weather[0]?.main}
-              </TableCell>
-              <TableCell className="invisible md:visible">
-                {city?.main?.pressure}
-              </TableCell>
-              <TableCell className="invisible md:visible">
-                {city?.main?.humidity}
-              </TableCell>
-            </TableRow>
+            {forecasts.map((forecast, index) => (
+              <TableRow key={index}>
+                <TableCell className="">{forecast.date}</TableCell>
+                <TableCell className="">{forecast.temp}</TableCell>
+                {isNotSmallDevice && (
+                  <>
+                    <TableCell>{forecast.description}</TableCell>
+                    <TableCell>{forecast.main}</TableCell>
+                    <TableCell>{forecast.pressure}</TableCell>
+                    <TableCell>{forecast.humidity}</TableCell>
+                  </>
+                )}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
         <Button className="ml-auto w-36" onClick={() => navigate(-1)}>
