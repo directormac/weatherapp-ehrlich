@@ -2,12 +2,17 @@ import { Button } from "@/components/ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export const Landing = () => {
-  const { loginWithRedirect } = useAuth0();
+  // const { loginWithRedirect } = useAuth0();
+
+  const { user, loginWithRedirect, error } = useAuth0();
+
+  console.log(error);
+  console.log(user);
 
   const handleLogin = async () => {
     await loginWithRedirect({
       appState: {
-        returnTo: "/",
+        returnTo: "/home",
       },
     });
   };
