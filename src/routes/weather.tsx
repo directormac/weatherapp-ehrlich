@@ -1,15 +1,14 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { Navigate } from "react-router-dom";
+import { loader } from "@/data/weather";
+import { useLoaderData } from "react-router-dom";
 
 export const Weather = () => {
-  const { isAuthenticated } = useAuth0();
+  const city = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-  if (!isAuthenticated) {
-    return <Navigate to="/" />;
-  }
+  console.log(city);
 
   return (
     <div>
+      {JSON.stringify(city)}
       <h1>Weather Page</h1>
     </div>
   );
