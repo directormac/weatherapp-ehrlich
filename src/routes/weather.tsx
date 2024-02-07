@@ -7,11 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useLoaderData } from "react-router-dom";
-import React from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
 
 export const Weather = () => {
   const city = useLoaderData();
+  const navigate = useNavigate();
 
   return (
     <div className="container">
@@ -23,24 +25,38 @@ export const Weather = () => {
             <TableRow>
               <TableHead>Date(mm/dd/yyyy)</TableHead>
               <TableHead>Temp(F)</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Main</TableHead>
-              <TableHead>Pressure</TableHead>
-              <TableHead>Humidity</TableHead>
+              <TableHead className="invisible md:visible">
+                Description
+              </TableHead>
+              <TableHead className="invisible md:visible">Main</TableHead>
+              <TableHead className="invisible md:visible">Pressure</TableHead>
+              <TableHead className="invisible md:visible">Humidity</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell>{city?.dt}</TableCell>
+              <TableCell>
+                {format(new Date(Date.now() + city?.dt), "MM/dd/yyyy")}
+              </TableCell>
               <TableCell>{city?.main?.temp}</TableCell>
-              <TableCell>{city?.weather[0]?.description}</TableCell>
-              <TableCell>{city?.weather[0]?.main}</TableCell>
-              <TableCell>{city?.main?.pressure}</TableCell>
-              <TableCell>{city?.main?.humidity}</TableCell>
+              <TableCell className="invisible md:visible">
+                {city?.weather[0]?.description}
+              </TableCell>
+              <TableCell className="invisible md:visible">
+                {city?.weather[0]?.main}
+              </TableCell>
+              <TableCell className="invisible md:visible">
+                {city?.main?.pressure}
+              </TableCell>
+              <TableCell className="invisible md:visible">
+                {city?.main?.humidity}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
-        {/* <p>{JSON.stringify(city)}</p> */}
+        <Button className="ml-auto w-36" onClick={() => navigate(-1)}>
+          Back
+        </Button>
       </div>
     </div>
   );
