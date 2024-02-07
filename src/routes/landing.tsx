@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
-import { redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 export const Landing = () => {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   if (isAuthenticated) {
-    redirect("/home");
+    return <Navigate to="/home" replace />;
   }
 
   const handleLogin = async () => {
