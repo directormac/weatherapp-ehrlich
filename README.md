@@ -25,8 +25,11 @@
   - [x] e.2 Choose an existing weather API to use
     - [ ] Weather.com
     - [x] OpenaWeatherApi
+          The provided [16 day / daily forecast data](https://openweathermap.org/forecast16)
+          isn't available for free tier users,
+          used [this](https://openweathermap.org/forecast5) as alternative.
 - [ ] f. User can navigate between three pages/screens
-  - [ ] Landing Screen
+  - [x] Landing Screen
   - [x] Home Screen
   - [x] Weather Screen
 - [x] g. Navigation can either be side or top bar.
