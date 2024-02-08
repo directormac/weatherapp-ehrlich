@@ -11,7 +11,7 @@ export const Profile = () => {
 
   return (
     <div className="flex flex-col space-y-4 py-20 justify-center items-center text-center">
-      <p>{user?.name}</p>
+      <h1 className="text-3xl font-bold">{user?.name}</h1>
       <Button variant="link">
         <a href={transformGithubUsernameToLink(user?.nickname)}>
           {transformGithubUsernameToLink(user?.nickname)}
