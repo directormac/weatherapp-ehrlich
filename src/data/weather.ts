@@ -7,15 +7,29 @@ const url = import.meta.env.VITE_OPENWEATHER_API_URL;
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
-  return redirect(`/weather?city=${formData.get("city")}`);
+  const errors: { city?: string } = {};
+
+  const city = formData.get("city");
+
+  return await fetch(`${url}/data/2.5/weather?q=${city}&appid=${key}`).then(
+    (response) => {
+      if (!response.ok) {
+        errors.city = "City not found, Please try another one!";
+        return errors;
+      } else {
+        return redirect(`/weather?city=${formData.get("city")}`);
+      }
+    },
+  );
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
   const city = new URL(request.url).searchParams.get("city");
 
-  if (!city) return redirect("/home");
+  if (city === "") return null;
 
   const data = await fetch(
+    // This endpoint doesn't work for the free version, replaced with the one below
     // `${url}/data/2.5/forecast/daily?q=${city}&units=imperial&cnt=16&appid=${key}`,
     `${url}/data/2.5/forecast?q=${city}&units=imperial&cnt=40&appid=${key}`,
   )
@@ -43,8 +57,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       return foreCast16;
     })
     .catch(() => {
-      const foreCast16: Array<Forecast> = [];
-      return foreCast16;
+      return null;
     });
   return data;
 };
