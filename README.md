@@ -4,9 +4,6 @@
 
 ## Requirements
 
-<!-- - [ ] Authentication with github oauth, using [Auth0](https://auth0.com/) -->
-<!-- - [ ] User can search for a city and weather information will be displayed -->
-
 - [x] a. Anonymous users i.e. users who are not authenticated can view a
       “Hello, World!” landing page with a welcome message and a login
       button.
