@@ -26,10 +26,27 @@ export const Navbar = () => {
     });
   };
 
+  const autehnticatedLinks = () => (
+    <>
+      <Button variant="link">
+        <Link to="/home">
+          <Home className="inline-flex mr-2" />
+          Home
+        </Link>
+      </Button>
+      <Button variant="link">
+        <Link to="/weather?city=">
+          <CloudRainIcon className="inline-flex mr-2" />
+          Weather
+        </Link>
+      </Button>
+    </>
+  );
+
   return (
     <>
       <header className="py-4 border-b">
-        <nav className="flex items-center mx-4">
+        <nav className="container flex items-center">
           <Link className="flex items-center space-x-4" to="/">
             <Cloud className="h-8 w-8" />
             <p
@@ -40,16 +57,10 @@ export const Navbar = () => {
               Weather Forecast
             </p>
           </Link>
-          <div className="inline-flex ml-auto space-x-2">
+          <div className="inline-flex ml-auto items-center space-x-2">
             {isAuthenticated && (
               <>
-                {isNotSmallDevice ? (
-                  <Button variant="link">
-                    <Link to="/home">Home</Link>
-                  </Button>
-                ) : (
-                  ""
-                )}
+                {isNotSmallDevice ? autehnticatedLinks() : ""}
                 <Button onClick={handleLogout}>Logout</Button>
               </>
             )}
@@ -65,10 +76,12 @@ export const Navbar = () => {
                   </SheetTrigger>
                   <SheetContent>
                     <SheetHeader>
-                      <SheetTitle>Weather Forecast</SheetTitle>
-                      <SheetDescription>
-                        A weather forecast application
-                      </SheetDescription>
+                      <Link to="/">
+                        <SheetTitle>Weather Forecast</SheetTitle>
+                        <SheetDescription>
+                          A weather forecast application
+                        </SheetDescription>
+                      </Link>
                     </SheetHeader>
                     <div className="grid gap-4 py-4">
                       <Button variant="link">
@@ -78,14 +91,14 @@ export const Navbar = () => {
                         </Link>
                       </Button>
                       <Button variant="link">
-                        <Link to="/home">
+                        <Link to="/weather?city=">
                           <CloudRainIcon className="inline-flex mr-2" />
                           Weather
                         </Link>
                       </Button>
                       <div className="inline-flex mx-auto items-center">
-                        <span className="mr-2">Switch theme</span>
-                        <ModeToggle />{" "}
+                        <ModeToggle />
+                        <span className="ml-2">Switch theme</span>
                       </div>
                     </div>
                   </SheetContent>
